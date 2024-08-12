@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>the thingy</title>
+</head>
+<body>
+    <h1>the thingy</h1>
+    <h2>client</h2>
+    <input type="text" id="client-ip" placeholder="enter ip">
+    <h2>server</h2>
+    <p id = "server-ip">a</p>
+    <button onclick="connectClient()">connect</button>
+    <p id = "connectStatus">a</p>
+<script>
+    clientIP = document.getElementById("client-ip");
+    serverIP = document.getElementById("server-ip");
+    connectStatus = document.getElementById("connectStatus");
+    
+    connectStatus.innerText = "Not connected.";
+    serverIP.innerText = "something.something.sdkjflfj.somethingelse";
+
+    function connectClient() {
+        console.log("Connecting to client...");
+        if (!validInput(clientIP.value)) {
+            connectStatus.innerText = "Cannot connect: invalid client IP";
+            return;
+        }
+
+        if (!establishServerConnection(clientIP.value)) {
+            connectStatus.innerText = "Cannot connect: server connection failed";
+            return;
+        }
+
+        connectStatus.innerText = ("Successfully connected client " + clientIP.value 
+        + " to " + serverIP.innerText);
+    }
+
+    function validInput(input) {
+        return input.length > 0;
+    }
+
+    function establishServerConnection(ip) {
+        // connects to server and returns boolean for connection status
+        return true;
+    }
+
+</script>
+</body>
+</html
