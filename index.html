@@ -8,23 +8,38 @@
 <body>
     <h1>the thingy</h1>
     <h2>client</h2>
-    <input type="text" id="client-ip" placeholder="enter ip">
+    <input type="text" id="client-ip" placeholder="enter ip: (###.###.#.#)">
     <h2>server</h2>
-    <p id = "server-ip">a</p>
-    <button onclick="connectClient()">connect</button>
-    <p id = "connectStatus">a</p>
+    <p id = "server-ip"></p>
+    <select name="hi" id="data-types">
+        <option>defaultoption</option>
+        <option>option1</option>
+        <option>option2</option>
+        <option>option3</option>
+        <option>option4</option>
+    </select>
+    <p></p>
+    <button onclick="addClient()">connect</button>
+    <p id = "connectStatus"></p>
 <script>
-    clientIP = document.getElementById("client-ip");
-    serverIP = document.getElementById("server-ip");
-    connectStatus = document.getElementById("connectStatus");
+    const validIPFormat = /^(\d{3}\.){2}\d\.\d$/;
+    const clientIP = document.getElementById("client-ip");
+    const serverIP = document.getElementById("server-ip");
+    const option = document.getElementById("data-types");
+    const connectStatus = document.getElementById("connectStatus");
     
     connectStatus.innerText = "Not connected.";
     serverIP.innerText = "something.something.sdkjflfj.somethingelse";
 
-    function connectClient() {
+    function addClient() {
         console.log("Connecting to client...");
         if (!validInput(clientIP.value)) {
             connectStatus.innerText = "Cannot connect: invalid client IP";
+            return;
+        }
+
+        if (option.value === "defaultoption") {
+            connectStatus.innerText = "Please select an option";
             return;
         }
 
@@ -34,11 +49,11 @@
         }
 
         connectStatus.innerText = ("Successfully connected client " + clientIP.value 
-        + " to " + serverIP.innerText);
+        + " to " + serverIP.innerText + " with option " + option.value);
     }
 
     function validInput(input) {
-        return input.length > 0;
+        return input.match(validIPFormat) != null;
     }
 
     function establishServerConnection(ip) {
