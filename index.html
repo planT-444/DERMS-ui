@@ -8,12 +8,20 @@
         p.colon {
             display: inline;
         }
-        #log-container{
-            visibility: hidden;
+        
+        #log-container {
             width: 300px;
-            height: 400px;
+            height: 200px;
             border: 1px solid #ccc;
+            background-color: #eee;
+            overflow-y: scroll;
             display: flex;
+            flex-direction: column-reverse;
+        }
+
+        #log {
+            display: flex;
+            flex-direction: column-reverse;
         }
 
 
@@ -24,12 +32,12 @@
     <h1>Client Interface</h1>
     <h2>Server</h2>
     <p>Enter IP and port</p>
-    <input type="text" id="server-ip" placeholder="Enter server IP">
+    <input type="text" id="server-ip" placeholder="Enter server IP" value = "2.2.2.2">
     <p class="colon">:</p>
-    <input type="text" id="server-port" placeholder="Enter port">
+    <input type="text" id="server-port" placeholder="Enter port" value = "234234">
     <button onclick="userConnectToServer()">Connect to server</button>
     <p id = "connection-error-message"></p>
-    <select name="data-type-select" id="data-type" disabled>
+    <select name="data-type-select" id="data-type" onchange="dataTypeSelectChanged()" disabled>
         <option value="default-option">Select a data type</option>
         <option>option1</option>
         <option>option2</option>
@@ -38,59 +46,93 @@
     </select>
     <button onclick="userRequestDataType()" id="request-data-type" disabled>Request data type</button>
     <div class="disabled" id="log-container">
-        <div id = "log">
-            <div>aaa</div>
-        </div>
+        <div id = "log"></div>
     </div>
 <script>
     const validIPFormat = /^(\d+\.){3}\d+$/;
+    const validPortFormat = /^\d+$/;
     const serverIP = document.getElementById("server-ip");
+    const serverPort = document.getElementById("server-port");
     const connectionErrorMessage = document.getElementById("connection-error-message");
-    const requestedDataType = document.getElementById("data-type");
-    const requestDataType = document.getElementById("request-data-type");
+    const dataTypeSelect = document.getElementById("data-type");
+    const dataTypeSubmit = document.getElementById("request-data-type");
     const logContainer = document.getElementById("log-container");
     const log = document.getElementById("log");
 
     function logMessage(msg) {
-        msgElement = document.createElement("div");
+        let msgElement = document.createElement("div");
         msgElement.textContent = msg;
-        log.insertBefore(msgElement)
+        log.insertBefore(msgElement, log.firstChild);
     }
 
-    function isValidIP(input) {
-        return input.match(validIPFormat) != null;
+    function isValidIP(ip) {
+        return ip.match(validIPFormat) != null;
+    }
+    
+    function isValidPort(port) {
+        return port.match(validPortFormat) != null;
     }
 
     function userConnectToServer() {
+        let ip = serverIP.value;
+        let port = serverPort.value;
+
         console.log("Connecting to server...");
-        if (!isValidIP(serverIP.value)) {
+        
+        if (!isValidIP(ip)) {
             connectionErrorMessage.textContent = "Cannot connect: invalid server IP";
             console.log("Cannot connect: invalid server IP");
             return;
         }
+        
+        if (!isValidPort(port)) {
+            connectionErrorMessage.textContent = "Cannot connect: invalid port";
+            console.log("Cannot connect: invalid port");
+            return;
+        }
+        
 
-        if (!connectToServer(serverIP.value)) {
+        if (!connectToServer(ip, port)) {
             connectionErrorMessage.textContent = "Cannot connect: server connection failed";
             console.log("Cannot connect: server connection failed");
             return;
         }
+
+        connectionErrorMessage.textContent = "";
+        dataTypeSelect.disabled = false;
+        logContainer.style.backgroundColor = "white";
+        logMessage(`Client connected to server! (${ip}:${port})`);
     }
 
     function userRequestDataType() {
-        console.log("Requesting data type: " + requestedDataType.value);
-        if (requestedDataType.value === "default-option") {
+        let dataType = dataTypeSelect.value
+        console.log("Requesting data type: " + dataType);
+        if (dataTypeSelect.value === "default-option") {
             connectionErrorMessage.textContent = "Please select an option";
             return;
         }
+
+        logMessage("Client requested data type " + dataType);
+
+        requestDataType(dataType)
     }
 
-    function connectToServer(ip) {
-        requestedDataType.disabled = false;
-        requestDataType.disabled = false;
-        logContainer.style.visibility = "visible";
-        
-        return true;
+    function dataTypeSelectChanged() {
+        dataTypeSubmit.disabled = dataTypeSelect.value === "default-option";
+    }
 
+
+
+    // backend starts here
+    function connectToServer(ip, port) {
+        // do the backend stuff
+        console.log("Backend: connecting to server...")
+        return true;
+    }
+
+    function requestDataType(dataType) {
+        console.log("Backend: requesting data type...")
+        // do the backend stuff
     }
 
     
