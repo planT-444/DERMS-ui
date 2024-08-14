@@ -1,0 +1,18 @@
+p.colon {
+    display: inline;
+}
+
+#log-container {
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+    background-color: #eee;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#log {
+    display: flex;
+    flex-direction: column-reverse;
+}
