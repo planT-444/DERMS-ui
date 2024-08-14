@@ -4,63 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>the thingy</title>
+    <style>
+        p.colon {
+            display: inline;
+        }
+        #log-container{
+            visibility: hidden;
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ccc;
+            display: flex;
+        }
+
+
+
+    </style>
 </head>
 <body>
-    <h1>the thingy</h1>
-    <h2>client</h2>
-    <input type="text" id="client-ip" placeholder="enter ip: (###.###.#.#)">
-    <h2>server</h2>
-    <p id = "server-ip"></p>
-    <select name="hi" id="data-types">
-        <option>defaultoption</option>
+    <h1>Client Interface</h1>
+    <h2>Server</h2>
+    <p>Enter IP and port</p>
+    <input type="text" id="server-ip" placeholder="Enter server IP">
+    <p class="colon">:</p>
+    <input type="text" id="server-port" placeholder="Enter port">
+    <button onclick="userConnectToServer()">Connect to server</button>
+    <p id = "connection-error-message"></p>
+    <select name="data-type-select" id="data-type" disabled>
+        <option value="default-option">Select a data type</option>
         <option>option1</option>
         <option>option2</option>
         <option>option3</option>
         <option>option4</option>
     </select>
-    <p></p>
-    <button onclick="addClient()">connect</button>
-    <p id = "connectStatus"></p>
+    <button onclick="userRequestDataType()" id="request-data-type" disabled>Request data type</button>
+    <div class="disabled" id="log-container">
+        <div id = "log">
+            <div>aaa</div>
+        </div>
+    </div>
 <script>
-    const validIPFormat = /^(\d{3}\.){2}\d\.\d$/;
-    const clientIP = document.getElementById("client-ip");
+    const validIPFormat = /^(\d+\.){3}\d+$/;
     const serverIP = document.getElementById("server-ip");
-    const option = document.getElementById("data-types");
-    const connectStatus = document.getElementById("connectStatus");
-    
-    connectStatus.innerText = "Not connected.";
-    serverIP.innerText = "something.something.sdkjflfj.somethingelse";
+    const connectionErrorMessage = document.getElementById("connection-error-message");
+    const requestedDataType = document.getElementById("data-type");
+    const requestDataType = document.getElementById("request-data-type");
+    const logContainer = document.getElementById("log-container");
+    const log = document.getElementById("log");
 
-    function addClient() {
-        console.log("Connecting to client...");
-        if (!validInput(clientIP.value)) {
-            connectStatus.innerText = "Cannot connect: invalid client IP";
-            return;
-        }
-
-        if (option.value === "defaultoption") {
-            connectStatus.innerText = "Please select an option";
-            return;
-        }
-
-        if (!establishServerConnection(clientIP.value)) {
-            connectStatus.innerText = "Cannot connect: server connection failed";
-            return;
-        }
-
-        connectStatus.innerText = ("Successfully connected client " + clientIP.value 
-        + " to " + serverIP.innerText + " with option " + option.value);
+    function logMessage(msg) {
+        msgElement = document.createElement("div");
+        msgElement.textContent = msg;
+        log.insertBefore(msgElement)
     }
 
-    function validInput(input) {
+    function isValidIP(input) {
         return input.match(validIPFormat) != null;
     }
 
-    function establishServerConnection(ip) {
-        // connects to server and returns boolean for connection status
-        return true;
+    function userConnectToServer() {
+        console.log("Connecting to server...");
+        if (!isValidIP(serverIP.value)) {
+            connectionErrorMessage.textContent = "Cannot connect: invalid server IP";
+            console.log("Cannot connect: invalid server IP");
+            return;
+        }
+
+        if (!connectToServer(serverIP.value)) {
+            connectionErrorMessage.textContent = "Cannot connect: server connection failed";
+            console.log("Cannot connect: server connection failed");
+            return;
+        }
     }
 
+    function userRequestDataType() {
+        console.log("Requesting data type: " + requestedDataType.value);
+        if (requestedDataType.value === "default-option") {
+            connectionErrorMessage.textContent = "Please select an option";
+            return;
+        }
+    }
+
+    function connectToServer(ip) {
+        requestedDataType.disabled = false;
+        requestDataType.disabled = false;
+        logContainer.style.visibility = "visible";
+        
+        return true;
+
+    }
+
+    
 </script>
 </body>
-</html
+</html>
