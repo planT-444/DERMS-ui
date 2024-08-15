@@ -23,7 +23,11 @@ $(document).ready(function() {
 
     console.log(extractMatrixFromTable(fetchedDataTable))
 
-    
+    function userClickedHeaderSort() {
+        header = $(this)
+        table = header.parent()
+        headerText = header.text()
+    }
 
     function insertMatrixInTable(matrix, table) {
         table.empty()
@@ -47,13 +51,15 @@ $(document).ready(function() {
 
     function extractMatrixFromTable(table) {
         let matrix = []
-        table.children().each(function() {
+        for (let r = 0; r < table.children().length; r++) {
+            trElement = table.children().eq(r)
             let row = []
-            $(this).children().each(function() {
-                row.push($(this).text())
-            })
+            for (let c = 0; c < trElement.children().length; c++) {
+                tdElement = trElement.children().eq(c)
+                row.push(tdElement.text())
+            }
             matrix.push(row)
-        })
+        }
         return matrix
     }
 
