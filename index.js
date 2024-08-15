@@ -1,76 +1,23 @@
 $(document).ready(function() {
-    const validIPFormat = /^(\d+\.){3}\d+$/;
-    const validPortFormat = /^\d+$/;
-    const serverIP = $("#server-ip");
-    const serverPort = $("#server-port");
-    const serverConnect = $("#server-connect");
-    const connectionErrorMessage = $("#connection-error-message");
     const dataTypeSelect = $("#data-type");
     const dataTypeSubmit = $("#request-data-type");
     const logContainer = $("#log-container");
     const log = $("#log");
 
-    serverConnect.click(userConnectToServer);
     dataTypeSelect.change(dataTypeSelectChanged);
     dataTypeSubmit.click(userRequestDataType);
 
     function logMessage(msg) {
-        let isScrolledToBottom = logContainer.scrollTop() === 0;
+        console.log("hi")
+        let isScrolledToBottom = logContainer.scrollTop() > -5;
         console.log(logContainer.scrollTop());
         console.log(isScrolledToBottom)
         let msgElement = $("<div>");
         msgElement.text(msg);
-        $("#log").append(msgElement);
+        log.append(msgElement);
         if (isScrolledToBottom) {
             logContainer.scrollTop(0);
         }
-    }
-
-    function isValidIP(ip) {
-        return ip.match(validIPFormat) != null;
-    }
-
-    function isValidPort(port) {
-        return port.match(validPortFormat) != null;
-    }
-
-    function userConnectToServer() {
-        let ip = serverIP.val();
-        let port = serverPort.val();
-
-
-        console.log("Connecting to server...");
-        
-        if (!isValidIP(ip)) {
-            connectionErrorMessage.text("Cannot connect: invalid server IP");
-            console.log("Cannot connect: invalid server IP");
-            return;
-        }
-        
-        if (!isValidPort(port)) {
-            connectionErrorMessage.text("Cannot connect: invalid port");
-            console.log("Cannot connect: invalid port");
-            return;
-        }
-        
-
-        if (!connectToServer(ip, port)) {
-            connectionErrorMessage.text("Cannot connect: server connection failed");
-            console.log("Cannot connect: server connection failed");
-            return;
-        }
-        
-        console.log(`Client connected to server! (${ip}:${port})`);
-
-        connectionErrorMessage.text("");
-        
-        serverIP.attr("disabled", true);
-        serverPort.attr("disabled", true);
-        serverConnect.attr("disabled", true);
-        dataTypeSelect.attr("disabled", false);
-        logContainer.css("backgroundColor", "white");
-
-        logMessage(`Client connected to server! (${ip}:${port})`);
     }
 
     function userRequestDataType() {
