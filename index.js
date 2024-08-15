@@ -13,18 +13,18 @@ $(document).ready(function() {
     const log = $("#log")
     const fetchedDataTable = $("#fetched-data-table")
 
-    
+    // button event bindings
     dataTypeSelect.change(dataTypeSelectChanged)
     dataTypeSubmit.click(userRequestDataType)
     dispatchButton.click(userSendDispatchSignal)
-    dispatchButton.attr("disabled", false) // for now
-
+    
+    // table setup
     insertMatrixIntoTable(table_grid, fetchedDataTable)
 
+    // testing
+    dispatchButton.attr("disabled", false) // for now
     console.log(extractMatrixFromTable(fetchedDataTable))
-    // console.log(sortedMatrixByColumn(extractMatrixFromTable(fetchedDataTable), 2))
     
-    assignHeadersClickEvent(fetchedDataTable)
 
     function assignHeadersClickEvent(table) {
         let headerRowChildren = table.children().eq(0).children()
@@ -39,11 +39,9 @@ $(document).ready(function() {
         let table = headerRow.parent()
         let headerText = header.text()
         let headerColumn = headerRow.children().index(header)
-        console.log(headerColumn)
         let matrix = extractMatrixFromTable(table)
         let sortedMatrix = sortedMatrixByColumn(matrix, headerColumn)
         insertMatrixIntoTable(sortedMatrix, table)
-        assignHeadersClickEvent(table)
     }
 
     function insertMatrixIntoTable(matrix, table) {
@@ -64,6 +62,7 @@ $(document).ready(function() {
             }
             table.append(newRowElement)
         }
+        assignHeadersClickEvent(table)
     }
 
     function extractMatrixFromTable(table) {
@@ -83,7 +82,6 @@ $(document).ready(function() {
     function sortedMatrixByColumn(matrix, targetColumn) {
         let tableHeaders = matrix.slice(0, 1)
         let tableElements = matrix.slice(1)
-        console.log(tableElements)
         let comparator = null
         if ($.isNumeric(tableElements[0][targetColumn])) {
             console.log("sorting by numerical value")
