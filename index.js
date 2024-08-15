@@ -19,17 +19,34 @@ $(document).ready(function() {
     dispatchButton.click(userSendDispatchSignal)
     dispatchButton.attr("disabled", false) // for now
 
-    insertMatrixInTable(table_grid, fetchedDataTable)
+    insertMatrixIntoTable(table_grid, fetchedDataTable)
 
     console.log(extractMatrixFromTable(fetchedDataTable))
+    // console.log(sortedMatrixByColumn(extractMatrixFromTable(fetchedDataTable), 2))
+    
+    assignHeadersClickEvent(fetchedDataTable)
 
-    function userClickedHeaderSort() {
-        header = $(this)
-        table = header.parent()
-        headerText = header.text()
+    function assignHeadersClickEvent(table) {
+        let headerRowChildren = table.children().eq(0).children()
+        for (let i = 0; i < headerRowChildren.length; i++) {
+            headerRowChildren.eq(i).click(userClickedHeaderSort)
+        }
     }
 
-    function insertMatrixInTable(matrix, table) {
+    function userClickedHeaderSort() {
+        let header = $(this)
+        let headerRow = header.parent()
+        let table = headerRow.parent()
+        let headerText = header.text()
+        let headerColumn = headerRow.children().index(header)
+        console.log(headerColumn)
+        let matrix = extractMatrixFromTable(table)
+        let sortedMatrix = sortedMatrixByColumn(matrix, headerColumn)
+        insertMatrixIntoTable(sortedMatrix, table)
+        assignHeadersClickEvent(table)
+    }
+
+    function insertMatrixIntoTable(matrix, table) {
         table.empty()
         for (let i = 0; i < matrix.length; i++) {
             let row = matrix[i]
@@ -63,18 +80,25 @@ $(document).ready(function() {
         return matrix
     }
 
-    function sortMatrixByColumn(matrix, targetColumn) {
+    function sortedMatrixByColumn(matrix, targetColumn) {
         let tableHeaders = matrix.slice(0, 1)
         let tableElements = matrix.slice(1)
+        console.log(tableElements)
         let comparator = null
         if ($.isNumeric(tableElements[0][targetColumn])) {
+            console.log("sorting by numerical value")
             comparator = function(rowA, rowB) {
                 targetA = parseFloat(rowA[targetColumn])
                 targetB = parseFloat(rowB[targetColumn]) 
                 return targetA > targetB ? 1 : -1
             }
         } else {
-            comparator = (rowA, rowB) => rowA[targetColumn] > rowB[targetColumn] ? 1 : -1
+            console.log("sorting by lexographical value")
+            comparator = function(rowA, rowB) {
+                targetA = rowA[targetColumn].toLowerCase()
+                targetB = rowB[targetColumn].toLowerCase()
+                return targetA > targetB ? 1 : -1
+            }
         }
         tableElements.sort(comparator)
         return tableHeaders.concat(tableElements)
