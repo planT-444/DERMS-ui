@@ -13,15 +13,20 @@ $(document).ready(function() {
     const log = $("#log")
     const fetchedDataTable = $("#fetched-data-table")
 
+    
+    dataTypeSelect.change(dataTypeSelectChanged)
+    dataTypeSubmit.click(userRequestDataType)
+    dispatchButton.click(userSendDispatchSignal)
     dispatchButton.attr("disabled", false) // for now
 
     insertMatrixInTable(table_grid, fetchedDataTable)
 
-    console.log(table_grid)
-    console.log(sortMatrixByColumn(table_grid, 1))
+    console.log(extractMatrixFromTable(fetchedDataTable))
+
     
 
     function insertMatrixInTable(matrix, table) {
+        table.empty()
         for (let i = 0; i < matrix.length; i++) {
             let row = matrix[i]
             let newRowElement = $("<tr>")
@@ -40,12 +45,24 @@ $(document).ready(function() {
         }
     }
 
+    function extractMatrixFromTable(table) {
+        let matrix = []
+        table.children().each(function() {
+            let row = []
+            $(this).children().each(function() {
+                row.push($(this).text())
+            })
+            matrix.push(row)
+        })
+        return matrix
+    }
+
     function sortMatrixByColumn(matrix, targetColumn) {
         let tableHeaders = matrix.slice(0, 1)
         let tableElements = matrix.slice(1)
         let comparator = null
         if ($.isNumeric(tableElements[0][targetColumn])) {
-            comparator = (rowA, rowB) => {
+            comparator = function(rowA, rowB) {
                 targetA = parseFloat(rowA[targetColumn])
                 targetB = parseFloat(rowB[targetColumn]) 
                 return targetA > targetB ? 1 : -1
@@ -57,9 +74,6 @@ $(document).ready(function() {
         return tableHeaders.concat(tableElements)
     }
 
-    dataTypeSelect.change(dataTypeSelectChanged)
-    dataTypeSubmit.click(userRequestDataType)
-    dispatchButton.click(userSendDispatchSignal)
 
     function logMessage(msg) {
         console.log("hi")
