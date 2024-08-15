@@ -1,35 +1,39 @@
 $(document).ready(function() {
-    const dataTypeSelect = $("#data-type");
-    const dataTypeSubmit = $("#request-data-type");
-    const logContainer = $("#log-container");
-    const log = $("#log");
+    const dataTypeSelect = $("#data-type")
+    const dataTypeSubmit = $("#request-data-type")
+    const dispatchButton = $("#send-dispatch-signal")
+    const logContainer = $("#log-container")
+    const log = $("#log")
 
-    dataTypeSelect.change(dataTypeSelectChanged);
-    dataTypeSubmit.click(userRequestDataType);
+    dispatchButton.attr("disabled", false) // for now
+
+    dataTypeSelect.change(dataTypeSelectChanged)
+    dataTypeSubmit.click(userRequestDataType)
+    dispatchButton.click(userSendDispatchSignal)
 
     function logMessage(msg) {
         console.log("hi")
-        let isScrolledToBottom = logContainer.scrollTop() > -5;
-        console.log(logContainer.scrollTop());
+        let isScrolledToBottom = logContainer.scrollTop() > -5
+        console.log(logContainer.scrollTop())
         console.log(isScrolledToBottom)
-        let msgElement = $("<div>");
-        msgElement.text(msg);
-        log.append(msgElement);
+        let msgElement = $("<div>")
+        msgElement.text(msg)
+        log.append(msgElement)
         if (isScrolledToBottom) {
-            logContainer.scrollTop(0);
+            logContainer.scrollTop(0)
         }
     }
 
     function userRequestDataType() {
-        let dataType = dataTypeSelect.val();
-        console.log("Requesting data type: " + dataType);
-        logMessage("Client requested data type " + dataType);
+        let dataType = dataTypeSelect.val()
+        console.log("Requesting data type: " + dataType)
+        logMessage("Client requested data type " + dataType)
         requestDataType(dataType)
     }
 
     function dataTypeSelectChanged() {
-        console.log("data-type-select changed");
-        dataTypeSubmit.attr("disabled", dataTypeSelect.val() === "default-option");
+        console.log("data-type-select changed")
+        dataTypeSubmit.attr("disabled", dataTypeSelect.val() === "default-option")
     }
 
 
@@ -44,6 +48,11 @@ $(document).ready(function() {
     function requestDataType(dataType) {
         console.log("Backend: requesting data type...")
         // do the backend stuff
+    }
+
+    function userSendDispatchSignal() {
+        console.log("SEnding dispatch signal")
+        logMessage("Sending dispatch signal")
     }
 });
 
