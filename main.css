@@ -25,6 +25,14 @@ p {
     margin:0px;
 }
 
+.sorted-column::after {
+    content: "↓";
+}
+
+.sorted-column-reverse::after {
+    content: "￪";
+}
+
 #colon {
     display: inline;
 }

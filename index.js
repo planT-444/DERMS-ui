@@ -37,11 +37,32 @@ $(document).ready(function() {
         let header = $(this)
         let headerRow = header.parent()
         let table = headerRow.parent()
-        let headerText = header.text()
-        let headerColumn = headerRow.children().index(header)
         let matrix = extractMatrixFromTable(table)
-        let sortedMatrix = sortedMatrixByColumn(matrix, headerColumn)
+
+        let headerColumn = headerRow.children().index(header)
+        let headerSortedStatus = header.attr("class")
+        let reverse = headerSortedStatus === "sorted-column"
+        let sortedMatrix = sortedMatrixByColumn(matrix, headerColumn, reverse = reverse)
         insertMatrixIntoTable(sortedMatrix, table)
+
+        headerRowChildren = table.children().eq(0).children() // table has been overwritten: cannot do headerRow.children()
+        
+        console.log('\n')
+        for (let i = 0; i < headerRowChildren.length; i++) {
+            console.log(i)
+            let currentHeader = headerRowChildren.eq(i)
+            console.log(currentHeader.text(), header.text())
+            if (currentHeader.text() === header.text()) {
+                console.log("woah!")
+                currentHeader.attr("class", reverse ? "sorted-column-reverse" : "sorted-column")
+                console.log("breaking", currentHeader.text === header.text())
+                break;
+            }
+            console.log(currentHeader.attr("class"))
+        }
+
+        // console.log(headerSortedStatus, reverse)
+
     }
 
     function insertMatrixIntoTable(matrix, table) {
@@ -79,7 +100,7 @@ $(document).ready(function() {
         return matrix
     }
 
-    function sortedMatrixByColumn(matrix, targetColumn) {
+    function sortedMatrixByColumn(matrix, targetColumn, reverse = false) {
         let tableHeaders = matrix.slice(0, 1)
         let tableElements = matrix.slice(1)
         let comparator = null
@@ -98,7 +119,11 @@ $(document).ready(function() {
                 return targetA > targetB ? 1 : -1
             }
         }
-        tableElements.sort(comparator)
+        if (reverse) {
+            tableElements.sort((rowA, rowB) => comparator(rowB, rowA))
+        } else {
+            tableElements.sort(comparator)
+        }
         return tableHeaders.concat(tableElements)
     }
 
