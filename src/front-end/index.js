@@ -5,7 +5,7 @@ table_grid = [
     ['AAAAAAAA', '69420', 'E', 'speedrunner']
 ]
 
-$(document).ready(function() {
+$(function() {
     const dataTypeSelect = $("#data-type")
     const dataTypeSubmit = $("#request-data-type")
     const dispatchButton = $("#send-dispatch-signal")
@@ -14,9 +14,9 @@ $(document).ready(function() {
     const fetchedDataTable = $("#fetched-data-table")
 
     // button event bindings
-    dataTypeSelect.change(dataTypeSelectChanged)
-    dataTypeSubmit.click(userRequestDataType)
-    dispatchButton.click(userSendDispatchSignal)
+    dataTypeSelect.on("change", dataTypeSelectChanged)
+    dataTypeSubmit.on("click", userRequestDataType)
+    dispatchButton.on("click", userSendDispatchSignal)
     
     // table setup
     insertMatrixIntoTable(table_grid, fetchedDataTable)
@@ -104,7 +104,14 @@ $(document).ready(function() {
         let tableHeaders = matrix.slice(0, 1)
         let tableElements = matrix.slice(1)
         let comparator = null
-        if ($.isNumeric(tableElements[0][targetColumn])) {
+        let isNumeric = true
+        for (let i = 0; i < tableElements.length; i++) {
+            if (!$.isNumeric(tableElements[i][targetColumn])) {
+                isNumeric = false
+                break
+            }
+        }
+        if (isNumeric) {
             console.log("sorting by numerical value")
             comparator = function(rowA, rowB) {
                 targetA = parseFloat(rowA[targetColumn])
