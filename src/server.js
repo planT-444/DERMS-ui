@@ -2,7 +2,7 @@ const express = require("express")
 const path = require("path")
 const port = 3000
 const restrictedFiles = ['/main.css', '/index.js']
-const domain = "http://localhost:3000"
+const domain = "localhost:3000"
 
 app = express()
 
