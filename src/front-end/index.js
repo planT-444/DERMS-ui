@@ -48,7 +48,7 @@ $(function() {
     function userRequestDataType() {
         let dataType = dataTypeSelect.val()
         console.log("Requesting data type: " + dataType)
-        logMessage("Client requested data type " + dataType)
+        logMessage("VM1 requested data type " + dataType)
         requestDataType(dataType)
     }
 
@@ -56,15 +56,7 @@ $(function() {
         console.log("data-type-select changed")
         dataTypeSubmit.attr("disabled", dataTypeSelect.val() === "default-option")
     }
-
-
-
-    // backend starts here
-    function connectToServer(ip, port) {
-        // do the backend stuff
-        console.log("Backend: connecting to server...")
-        return true;
-    }
+    
 
     function requestDataType(dataType) {
         console.log("Backend: requesting data type...")
