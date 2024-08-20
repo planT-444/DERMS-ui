@@ -10,7 +10,7 @@ app.use((req, res, next) => {
     const referer = req.get("Referer")
     console.log(req.path, referer)
     if (restrictedFiles.includes(req.path) && !(referer && referer.includes(domain))) {
-        res.status(403).sendFile(path.join(__dirname, 'front-end', 'accessDenied.html'))
+        res.status(403).sendFile(path.join(__dirname, 'front-end', 'unauthorized.html'))
     } else {
         next()
     }
