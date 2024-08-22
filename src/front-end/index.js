@@ -1,4 +1,11 @@
-table_grid = [
+import {
+    assignHeadersClickEvent,
+    extractMatrixFromTable,
+    insertMatrixIntoTable,
+    sortedMatrixByColumn,
+    userClickedHeaderSort
+} from './tableManipulation.js'
+let table_grid = [
     ['name', 'age', 'favfood', 'minecraft'],
     ['beasdlfjdlj', '179', 'borgurh', 'veteran'],
     ['wahahahah', '2', 'SPANAKOPITA', 'noob'],
@@ -30,10 +37,7 @@ $(function() {
 
 
     function logMessage(msg) {
-        console.log("hi")
         let isScrolledToBottom = logContainer.scrollTop() > -5
-        console.log(logContainer.scrollTop())
-        console.log(isScrolledToBottom)
         let msgElement = $("<div>")
         msgElement.text(msg)
         log.append(msgElement)

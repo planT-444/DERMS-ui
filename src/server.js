@@ -1,14 +1,13 @@
-const express = require("express")
-const path = require("path")
-const mysql = require("mysql2")
-const dotenv = require("dotenv")
+import express from 'express'
+import path from 'path'
 
-dotenv.config()
+const __dirname = import.meta.dirname;
+
 const port = 3000
 const restrictedFiles = ['/main.css', '/index.js']
 const domain = "localhost:3000"
 
-app = express()
+const app = express()
 
 app.use((req, res, next) => {
     const referer = req.get("Referer")

@@ -17,20 +17,14 @@ function userClickedHeaderSort() {
     let sortedMatrix = sortedMatrixByColumn(matrix, headerColumn, reverse = reverse)
     insertMatrixIntoTable(sortedMatrix, table)
 
-    headerRowChildren = table.children().eq(0).children() // table has been overwritten: cannot do headerRow.children()
+    let headerRowChildren = table.children().eq(0).children() // table has been overwritten: cannot do headerRow.children()
     
-    console.log('\n')
     for (let i = 0; i < headerRowChildren.length; i++) {
-        console.log(i)
         let currentHeader = headerRowChildren.eq(i)
-        console.log(currentHeader.text(), header.text())
         if (currentHeader.text() === header.text()) {
-            console.log("woah!")
             currentHeader.attr("class", reverse ? "sorted-column-reverse" : "sorted-column")
-            console.log("breaking", currentHeader.text === header.text())
             break;
         }
-        console.log(currentHeader.attr("class"))
     }
 
     // console.log(headerSortedStatus, reverse)
@@ -61,10 +55,10 @@ function insertMatrixIntoTable(matrix, table) {
 function extractMatrixFromTable(table) {
     let matrix = []
     for (let r = 0; r < table.children().length; r++) {
-        trElement = table.children().eq(r)
+        let trElement = table.children().eq(r)
         let row = []
         for (let c = 0; c < trElement.children().length; c++) {
-            tdElement = trElement.children().eq(c)
+            let tdElement = trElement.children().eq(c)
             row.push(tdElement.text())
         }
         matrix.push(row)
@@ -84,17 +78,15 @@ function sortedMatrixByColumn(matrix, targetColumn, reverse = false) {
         }
     }
     if (isNumeric) {
-        console.log("sorting by numerical value")
         comparator = function(rowA, rowB) {
-            targetA = parseFloat(rowA[targetColumn])
-            targetB = parseFloat(rowB[targetColumn]) 
+            let targetA = parseFloat(rowA[targetColumn])
+            let targetB = parseFloat(rowB[targetColumn]) 
             return targetA > targetB ? 1 : -1
         }
     } else {
-        console.log("sorting by lexographical value")
         comparator = function(rowA, rowB) {
-            targetA = rowA[targetColumn].toLowerCase()
-            targetB = rowB[targetColumn].toLowerCase()
+            let targetA = rowA[targetColumn].toLowerCase()
+            let targetB = rowB[targetColumn].toLowerCase()
             return targetA > targetB ? 1 : -1
         }
     }
@@ -104,4 +96,12 @@ function sortedMatrixByColumn(matrix, targetColumn, reverse = false) {
         tableElements.sort(comparator)
     }
     return tableHeaders.concat(tableElements)
+}
+
+export {
+    assignHeadersClickEvent,
+    extractMatrixFromTable,
+    insertMatrixIntoTable,
+    sortedMatrixByColumn,
+    userClickedHeaderSort
 }
