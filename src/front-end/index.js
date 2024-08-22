@@ -14,12 +14,9 @@ $(function() {
     const fetchedDataTable = $("#fetched-data-table")
 
     // button event bindings
-    // dataTypeSelect.on("change", dataTypeSelectChanged)
-    // dataTypeSubmit.on("click", userRequestDataType)
-    // dispatchButton.on("click", userSendDispatchSignal)
-    dataTypeSelect.change(dataTypeSelectChanged)
-    dataTypeSubmit.click(userRequestDataType)
-    dispatchButton.click(userSendDispatchSignal)
+    dataTypeSelect.on("change", dataTypeSelectChanged)
+    dataTypeSubmit.on("click", userRequestDataType)
+    dispatchButton.on("click", userSendDispatchSignal)
     
     // table setup
     insertMatrixIntoTable(table_grid, fetchedDataTable)

@@ -1,5 +1,9 @@
 const express = require("express")
 const path = require("path")
+const mysql = require("mysql2")
+const dotenv = require("dotenv")
+
+dotenv.config()
 const port = 3000
 const restrictedFiles = ['/main.css', '/index.js']
 const domain = "localhost:3000"
