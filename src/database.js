@@ -1,4 +1,4 @@
- import mysql from "mysql2"
+import mysql from "mysql2"
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -41,3 +41,5 @@ async function getColumnMajorData(tableName) {
 }
 
 console.log(await getColumnMajorData('notes'))
+
+export {getColumnMajorData}

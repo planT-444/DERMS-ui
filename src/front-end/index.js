@@ -4,12 +4,14 @@ $(function() {
     const dispatchButton = $("#send-dispatch-signal")
     const logContainer = $("#log-container")
     const log = $("#log")
+    const queryDataButton = $("#query-data-button")
 
     // button event bindings
     dataTypeSelect.on("change", dataTypeSelectChanged)
     dataTypeSubmit.on("click", userRequestDataType)
     dispatchButton.on("click", userSendDispatchSignal)
-
+    queryDataButton.on("click", async function() {await userQueryData()})
+    
     // testing
     dispatchButton.attr("disabled", false) // for now
     
@@ -46,6 +48,23 @@ $(function() {
     function userSendDispatchSignal() {
         console.log("SEnding dispatch signal")
         logMessage("Sending dispatch signal")
+    }
+
+    async function userQueryData() {
+        console.log('ZE BOHTON VAS PRESSD')
+        try {
+            const response = await fetch("http://localhost:3000/data")
+            if (!response.ok)
+                throw new Error("ZERE VAS A PROHBLEM FETCHING ZE DATAH1!!1!")
+            const data = await response.json()
+            console.log(data)
+        } catch {
+            console.log("ERRRRORRRR FETCHING ZE DATAH")
+        }
+    }
+
+    function DUMMYFUNKY() {
+        console.log("FUNKYYYYYYYY")
     }
 });
 

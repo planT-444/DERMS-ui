@@ -85,11 +85,3 @@ p {
     padding: 10px;
 }
 
-table {
-    width: 50%;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid rgb(107, 140, 180);
-}

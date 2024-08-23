@@ -1,5 +1,6 @@
 import express from 'express'
 import path from 'path'
+import { getColumnMajorData } from './database.js';
 
 const __dirname = import.meta.dirname;
 
@@ -8,6 +9,10 @@ const restrictedFiles = ['/main.css', '/index.js']
 const domain = "localhost:3000"
 
 const app = express()
+
+
+
+
 
 app.use((req, res, next) => {
     const referer = req.get("Referer")
@@ -23,6 +28,13 @@ app.use(express.static(path.join(__dirname, 'front-end')))
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'front-end', 'index.html'))
+})
+
+app.get('/data', (req, res) => {
+    console.log("I HAF RRECEIVED YOUR REQUEST")
+    const dummyData = [1,2,3]
+    // res.json(getColumnMajorData("notes"))
+    res.json(dummyData)
 })
 
 app.listen(port, () => {
