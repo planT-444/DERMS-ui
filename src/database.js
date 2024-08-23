@@ -40,6 +40,6 @@ async function getColumnMajorData(tableName) {
 
 }
 
-console.log(await getColumnMajorData('notes'))
+console.log(await getColumnMajorData('load_data'))
 
 export {getColumnMajorData}
