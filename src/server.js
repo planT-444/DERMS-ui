@@ -12,8 +12,6 @@ const app = express()
 
 
 
-
-
 app.use((req, res, next) => {
     const referer = req.get("Referer")
     console.log(req.path, referer)
@@ -30,11 +28,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'front-end', 'index.html'))
 })
 
-app.get('/data', (req, res) => {
+app.get('/data', async (req, res) => {
     console.log("I HAF RRECEIVED YOUR REQUEST")
     const dummyData = [1,2,3]
-    // res.json(getColumnMajorData("notes"))
-    res.json(dummyData)
+    res.json(await getColumnMajorData("notes"))
+    
 })
 
 app.listen(port, () => {
