@@ -1,38 +1,17 @@
-import {
-    assignHeadersClickEvent,
-    extractMatrixFromTable,
-    insertMatrixIntoTable,
-    sortedMatrixByColumn,
-    userClickedHeaderSort
-} from './tableManipulation.js'
-let table_grid = [
-    ['name', 'age', 'favfood', 'minecraft'],
-    ['beasdlfjdlj', '179', 'borgurh', 'veteran'],
-    ['wahahahah', '2', 'SPANAKOPITA', 'noob'],
-    ['AAAAAAAA', '69420', 'E', 'speedrunner']
-]
-
 $(function() {
     const dataTypeSelect = $("#data-type")
     const dataTypeSubmit = $("#request-data-type")
     const dispatchButton = $("#send-dispatch-signal")
     const logContainer = $("#log-container")
     const log = $("#log")
-    const fetchedDataTable = $("#fetched-data-table")
 
     // button event bindings
     dataTypeSelect.on("change", dataTypeSelectChanged)
     dataTypeSubmit.on("click", userRequestDataType)
     dispatchButton.on("click", userSendDispatchSignal)
-    
-    // table setup
-    insertMatrixIntoTable(table_grid, fetchedDataTable)
 
     // testing
     dispatchButton.attr("disabled", false) // for now
-    console.log(extractMatrixFromTable(fetchedDataTable))
-    
-
     
 
 

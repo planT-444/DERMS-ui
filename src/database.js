@@ -2,7 +2,7 @@
 import dotenv from "dotenv"
 dotenv.config()
 
-const con = mysql.createConnection({
+const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
@@ -10,7 +10,7 @@ const con = mysql.createConnection({
 }).promise()
 
 async function getColumnNames(tableName) {
-    let [columnRecords] = await con.query(
+    let [columnRecords] = await pool.query(
         `
         SELECT COLUMN_NAME
         FROM INFORMATION_SCHEMA.COLUMNS
@@ -21,19 +21,23 @@ async function getColumnNames(tableName) {
 }
 
 // need to add check for sql injection prevention
-async function dataTableToMatrix(tableName) {
-    let columnNames = await getColumnNames(tableName)
-    let matrix = [columnNames]
-    let [records] = await con.query(
+async function getColumnMajorData(tableName) {
+    const [records] = await pool.query(
         `
-        SELECT * FROM ${tableName};`
+        SELECT * FROM ${tableName}`
     )
+    if (!records)
+        return null
+    const columnMajorData = {}
     for (let record of records) {
-        matrix.push(Object.values(record))
+        for (let columnName in record) {
+            if (!(columnName in columnMajorData))
+                columnMajorData[columnName] = []
+            columnMajorData[columnName].push(record[columnName])
+        }
     }
+    return columnMajorData
 
-    return matrix
-    
 }
 
-console.log(await dataTableToMatrix('notes'))
+console.log(await getColumnMajorData('notes'))
