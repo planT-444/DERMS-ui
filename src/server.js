@@ -30,7 +30,6 @@ app.get('/', (req, res) => {
 
 app.get('/data', async (req, res) => {
     console.log("I HAF RRECEIVED YOUR REQUEST")
-    const dummyData = [1,2,3]
     res.json(await getColumnMajorData("load_data"))
     
 })

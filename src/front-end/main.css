@@ -25,17 +25,13 @@ p {
     margin:0px;
 }
 
-.sorted-column::after {
+/* .sorted-column::after {
     content: "↓";
 }
 
 .sorted-column-reverse::after {
     content: "￪";
-}
-
-#colon {
-    display: inline;
-}
+} */
 
 #content-container {
     display: flex;
@@ -47,22 +43,14 @@ p {
 #input-container {
     background-color: rgb(185, 213, 255);
     padding: 10px;
-    width: 35%;
+    width: 50%;
     border-bottom-left-radius: 20px;
     
 }
 
-#server-ip {
-    width: 110px;
-}
-
-#server-port {
-    width: 50px;
-}
-
 #log-container {
-    width: 65%;
-    height:200px;
+    width: 50%;
+    height:350px;
     padding: 10px;
     border: 2px solid #a6cbdb;
     border-bottom-right-radius: 10px;
