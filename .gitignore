@@ -1,2 +1,6 @@
-.env
+src/old-stuff/.env
 node_modules/
+config/
+migrations/
+seeders/
+models/sequelizeSetup.js

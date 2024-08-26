@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path'
-import { getColumnMajorData } from './database.js';
+import { getColumnMajorLoadData } from './database.js';
 
 const __dirname = import.meta.dirname;
 
@@ -30,9 +30,10 @@ app.get('/', (req, res) => {
 
 app.get('/data', async (req, res) => {
     console.log("I HAF RRECEIVED YOUR REQUEST")
-    res.json(await getColumnMajorData("load_data"))
+    res.json(await getColumnMajorLoadData("load_data"))
     
 })
+
 
 app.listen(port, () => {
     console.log("listening on port ", port)

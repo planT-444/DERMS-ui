@@ -1,35 +1,20 @@
-import mysql from "mysql2"
-import dotenv from "dotenv"
-dotenv.config()
+import db from '../models/index.cjs'
+import defineLoadDataRecord from '../models/loadDataRecord.cjs'
 
-const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE
-}).promise()
+const loadDataRecord = defineLoadDataRecord(db.sequelize)
 
-async function getColumnNames(tableName) {
-    let [columnRecords] = await pool.query(
-        `
-        SELECT COLUMN_NAME
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME=?;`, [tableName]
-    )
-    let columnNames = columnRecords.map((row) => row['COLUMN_NAME'])
-    return columnNames
-}
+await db.sequelize.sync()
+console.log("connected to database")
 
 // need to add check for sql injection prevention
-async function getColumnMajorData(tableName) {
-    const [records] = await pool.query(
-        `
-        SELECT * FROM ${tableName}`
-    )
-    if (!records)
+async function getColumnMajorLoadData() {
+    const fullRecords = await loadDataRecord.findAll()
+    const plainRecords = fullRecords.map((fullRecord) => fullRecord.get())
+    
+    if (!plainRecords)
         return null
     const columnMajorData = {}
-    for (let record of records) {
+    for (let record of plainRecords) {
         for (let columnName in record) {
             if (!(columnName in columnMajorData))
                 columnMajorData[columnName] = []
@@ -40,6 +25,4 @@ async function getColumnMajorData(tableName) {
 
 }
 
-console.log(await getColumnMajorData('load_data'))
-
-export {getColumnMajorData}
+export {getColumnMajorLoadData}
