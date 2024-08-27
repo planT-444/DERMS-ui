@@ -20,6 +20,7 @@ The database will include two tables. Each VM can only write to one table and wi
 * Table 1: PF data
 * Table 2: OPF dispatch signal
 
+&nbsp; 
 
 ## User Interface (UI) for VM1
 ### Purpose
@@ -29,3 +30,11 @@ The UI allow users to:
 * Run the OPF algorithm
 * Send the OPF dispatch signal manually
 * Perform all of the above without familiarity with backend APIs
+
+### Current Project Status
+The frontend needs to be finalized (details will be given soon). Further styling can still be done.
+
+The backend is still not connected to VM1 or the database yet. I have created my own MySQL database with sample data along with a server on localhost to simluate client-server-database communication.
+
+### Packages used
+Chart.js, JQuery, Express, Sequelize
